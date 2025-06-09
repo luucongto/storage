@@ -1,0 +1,56 @@
+services:
+  validator1:
+    image: onematrix:local
+    volumes:
+      - /home/tom/.onematrix-config/localchain-1/.onematrix:/.onematrix
+    command: ["onematrixd", "start", "--rpc.laddr", "tcp://0.0.0.0:26657"]
+    stdin_open: true
+    tty: true
+    user: "1000:1000"
+    restart: "no"
+    ports:
+      - "8545:8545"
+      - "26656:26656"
+      - "26657:26657"
+      - "1317:1317"
+      - "9090:9090"
+    networks:
+      - localnet
+  validator2:
+    image: onematrix:local
+    volumes:
+      - /home/tom/.onematrix-config/localchain-2/.onematrix:/.onematrix
+    command: ["onematrixd", "start", "--rpc.laddr", "tcp://0.0.0.0:26657"]
+    stdin_open: true
+    tty: true
+    user: "1000:1000"
+    restart: "no"
+    depends_on:
+      - validator1
+    ports:
+      - "26856:26656"
+      - "26857:26657"
+      - "1319:1317"
+      - "9092:9090"
+    networks:
+      - localnet
+  validator3:
+    image: onematrix:local
+    volumes:
+      - /home/tom/.onematrix-config/localchain-3/.onematrix:/.onematrix
+    command: ["onematrixd", "start", "--rpc.laddr", "tcp://0.0.0.0:26657"]
+    stdin_open: true
+    tty: true
+    user: "1000:1000"
+    restart: "no"
+    depends_on:
+      - validator1
+    ports:
+      - "26956:26656"
+      - "26957:26657"
+      - "1320:1317"
+      - "9093:9090"
+    networks:
+      - localnet
+networks:
+  localnet:
